@@ -1,0 +1,70 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+    <table class="striped">
+        <colgroup>
+            <col width="200">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>Nom de l'hôte: <br><i>Groupe d'instances géré</i></td>
+				
+                <td><b>{{ hostname }}</b></td>
+            </tr>
+            <tr>
+                <td>Modèle: <br><i>Instance de la VM template</i></td>
+				
+                <td><b>{{ template }}</b></td>
+            </tr>
+			<!--<tr>
+                <td>Type de machine: <br><i>Caractéritiques de la VM</i></td>
+                <td><b>{{ machine-type }}</b></td>
+            </tr>-->
+			<tr>
+                <td>Zone: <br><i>Location du serveur</i></td> <!--De l'instance-->
+				
+                <td><b>{{ zone }}</b></td>
+            </tr>
+            <tr>
+                <td>Charge actuelle: <br> <i>Charge de l'instance</i></td>
+                {% if working %}
+                <td><span class="btn red">high</span></td>
+                {% else %}
+                <td><span class="btn green">none</span></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Santé de l'instance:</td>
+                {% if healthy %}
+                <td><span class="btn green">healthy</span></td><!--Opérationnel=vérif état OK-->
+                {% else %}
+                <td><span class="btn red">unhealthy</span></td><!--Non Opérationnel=vérif état KO-->
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Actions:</td>
+                <td>
+                    {% if healthy %}
+					<!--Rendre l'instance indisponible(non opérationnelle pour récéptionner du trafic-->
+                    <a class="btn blue" href="/makeUnhealthy">Make unhealthy</a>
+                    {% else %}
+					<!--Rendre l'instance disponible(opérationnelle pour récéptionner du trafic-->
+                    <a class="btn blue" href="/makeHealthy">Make healthy</a>
+                    {% endif %}
+					<!--Vérifier la vérification d'état de l'instance (dispo ou pas)-->
+                    <a class="btn blue" href="/health">Check health</a>
+
+                    {% if working %}
+                    <a class="btn blue" href="/stopLoad">Stop load</a>
+                    {% else %}
+                    <a class="btn blue" href="/startLoad">Start load</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
